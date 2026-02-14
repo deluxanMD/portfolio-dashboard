@@ -4,9 +4,14 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Button } from '@mui/material'
 import AcUnitIcon from '@mui/icons-material/AcUnit'
+import { useSelector } from 'react-redux'
+import type { RootState } from './store'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  const auth = useSelector((state: RootState) => state.auth)
+  console.log(auth)
 
   return (
     <>
