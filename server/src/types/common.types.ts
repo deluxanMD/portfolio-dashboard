@@ -12,6 +12,9 @@ export enum ErrorMessage {
   ASSET_NOT_FOUND = 'Asset not found',
   INVALID_CREDENTIALS = 'Invalid credentials',
   UNAUTHORIZED = 'User not authenticated',
+  UNAUTHORIZED_ASSET = 'Not authorized for this asset',
+  INSUFFICIENT_QTY = 'Insufficient quantity to sell',
+  REQUIRED_FIELDS = 'Missing required fields',
   SERVER_ERROR = 'Server error',
 }
 

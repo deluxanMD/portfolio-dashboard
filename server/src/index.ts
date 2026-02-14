@@ -12,6 +12,7 @@ import logger from './utils/logger.util';
 // Routes
 import authRoutes from './routes/auth.routes';
 import assetRoutes from './routes/asset.routes';
+import transactionRoutes from './routes/transaction.routes';
 
 // types
 import { SystemError } from './types/error.types';
@@ -56,6 +57,7 @@ app.use(
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/assets', assetRoutes);
+app.use('/api/transaction', transactionRoutes);
 
 // Health Check
 app.get('/health', (_req: Request, res: Response) => {

@@ -13,10 +13,7 @@ export const getPortfolio = async (req: AuthRequest, res: Response): Promise<voi
     if (!userId) {
       res.status(401).json({
         success: false,
-        error: {
-          code: ErrorCode.UNAUTHORIZED,
-          message: ErrorMessage.UNAUTHORIZED,
-        },
+        error: { code: ErrorCode.UNAUTHORIZED, message: ErrorMessage.UNAUTHORIZED },
       });
       return;
     }
@@ -42,10 +39,7 @@ export const addAsset = async (req: AuthRequest, res: Response): Promise<void> =
     if (!userId) {
       res.status(401).json({
         success: false,
-        error: {
-          code: ErrorCode.UNAUTHORIZED,
-          message: ErrorMessage.UNAUTHORIZED,
-        },
+        error: { code: ErrorCode.UNAUTHORIZED, message: ErrorMessage.UNAUTHORIZED },
       });
       return;
     }
@@ -57,10 +51,7 @@ export const addAsset = async (req: AuthRequest, res: Response): Promise<void> =
     logger.error('Add asset error:', error);
     res.status(500).json({
       success: false,
-      error: {
-        code: ErrorCode.SERVER_ERROR,
-        message: ErrorMessage.SERVER_ERROR,
-      },
+      error: { code: ErrorCode.SERVER_ERROR, message: ErrorMessage.SERVER_ERROR },
     });
   }
 };
