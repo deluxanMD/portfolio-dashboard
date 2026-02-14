@@ -11,6 +11,9 @@ import logger from './utils/logger.util';
 
 // Routes
 import authRoutes from './routes/auth.routes';
+import assetRoutes from './routes/asset.routes';
+
+// types
 import { SystemError } from './types/error.types';
 
 // Load env files based on the current environment
@@ -52,6 +55,7 @@ app.use(
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/assets', assetRoutes);
 
 // Health Check
 app.get('/health', (_req: Request, res: Response) => {
