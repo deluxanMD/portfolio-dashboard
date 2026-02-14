@@ -1,14 +1,19 @@
 import express, { Express, Request, Response } from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 
+// Routes
+import authRoutes from '@/routes/auth.routes';
+import { connectDB } from './config/database';
+
 // Load env files based on the current environment
+const PORT = process.env.PORT || 5001;
 const environment = process.env.NODE_ENV || 'development';
 const envFile = `.env.${environment}`;
 
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+connectDB();
 
 const app: Express = express();
 
@@ -17,25 +22,16 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.get('/health', (req: Request, res: Response) => {
+app.use('/api/auth', authRoutes);
+
+// Health Check
+app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({
     status: 'ok',
     message: `Portfolio management API is running in ${environment} mode`,
   });
 });
 
-// Database Connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db';
-
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log(`Connected to MongoDB`);
-
-    app.listen((PORT) => () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error(`MongoDB connection error`, error);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
