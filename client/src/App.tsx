@@ -1,45 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from '@mui/material'
-import AcUnitIcon from '@mui/icons-material/AcUnit'
-import { useSelector } from 'react-redux'
-import type { RootState } from './store'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import LoginPage from './pages/login/login.page'
+import RegisterPage from './pages/register/register.page'
+import ProtectedRoute from './components/protected-route'
+
+// Create a default theme
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#1976d2',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+})
+
+const DashboardPlaceholder = () => <h1>Dashboard (Protected)</h1>
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  const auth = useSelector((state: RootState) => state.auth)
-  console.log(auth)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Button variant="contained" color="error">
-        Button
-      </Button>
-      <AcUnitIcon />
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<DashboardPlaceholder />} />
+            {/* Add Portfolio and Transaction routes here later */}
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
