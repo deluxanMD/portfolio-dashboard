@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { AuthService } from '../../service/auth.service';
 import { UserRepository } from '../../repository/user.repository';
+import { IUser } from '../../types/user.types';
 
 // Mock dependencies
 jest.mock('../../repository/user.repository');
@@ -26,7 +27,10 @@ describe('AuthService', () => {
       const username = 'testuser';
       const password = 'password1234';
 
-      mockUserRepository.findByUsername.mockResolvedValue({ _id: '1', username } as any);
+      mockUserRepository.findByUsername.mockResolvedValue({
+        _id: '1',
+        username,
+      } as unknown as IUser);
 
       const result = await authService.register(username, password);
 
@@ -64,8 +68,8 @@ describe('AuthService', () => {
 
     it('should return error if password does not match', async () => {
       const user = { _id: '1', username: 'test', passwordHash: 'hash' };
-      // @ts-ignore
-      mockUserRepository.findByUsername.mockResolvedValue(user);
+
+      mockUserRepository.findByUsername.mockResolvedValue(user as unknown as IUser);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
       const result = await authService.login('test', 'wrongpassword');
@@ -78,8 +82,7 @@ describe('AuthService', () => {
       const user = { _id: '1', username: 'test', passwordHash: 'hash' };
       const token = 'fake_jwt_token';
 
-      // @ts-ignore
-      mockUserRepository.findByUsername.mockResolvedValue(user);
+      mockUserRepository.findByUsername.mockResolvedValue(user as unknown as IUser);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
       (jwt.sign as jest.Mock).mockReturnValue(token);
 
