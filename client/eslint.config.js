@@ -19,5 +19,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'no-extra-boolean-cast': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
   },
 ])
