@@ -1,7 +1,5 @@
 export enum ErrorCode {
-  USER_EXIST = 'USER_EXIST',
-  INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
-  SERVER_ERROR = 'SERVER_ERROR',
+  BAD_REQUEST = 400,
 }
 
 export enum ErrorMessage {

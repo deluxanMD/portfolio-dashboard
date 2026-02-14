@@ -21,7 +21,7 @@ export class AuthService {
       return {
         success: false,
         error: {
-          code: ErrorCode.USER_EXIST,
+          code: ErrorCode.BAD_REQUEST,
           message: ErrorMessage.USER_EXIST,
         },
       };
@@ -49,7 +49,7 @@ export class AuthService {
       return {
         success: false,
         error: {
-          code: ErrorCode.INVALID_CREDENTIALS,
+          code: ErrorCode.BAD_REQUEST,
           message: ErrorMessage.INVALID_CREDENTIALS,
         },
       };
@@ -61,7 +61,7 @@ export class AuthService {
       return {
         success: false,
         error: {
-          code: ErrorCode.INVALID_CREDENTIALS,
+          code: ErrorCode.BAD_REQUEST,
           message: ErrorMessage.INVALID_CREDENTIALS,
         },
       };
