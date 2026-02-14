@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '@/repository/user.repository';
+import { ErrorCode, ErrorMessage, ServiceResponse } from '@/types/common.types';
 
 export class AuthService {
   private userRepository: UserRepository;
@@ -10,11 +11,20 @@ export class AuthService {
   }
 
   // Create new user
-  async register(username: string, password: string): Promise<{ message: string }> {
+  async register(
+    username: string,
+    password: string
+  ): Promise<ServiceResponse<{ message: string }>> {
     const existingUser = await this.userRepository.findByUsername(username);
 
     if (existingUser) {
-      throw new Error('User already exist!');
+      return {
+        success: false,
+        error: {
+          code: ErrorCode.USER_EXIST,
+          message: ErrorMessage.USER_EXIST,
+        },
+      };
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -22,21 +32,39 @@ export class AuthService {
 
     await this.userRepository.createUser(username, passwordHash);
 
-    return { message: 'User created successfully' };
+    return {
+      success: true,
+      data: { message: 'User created successfully' },
+    };
   }
 
   // Login user
-  async login(username: string, password: string): Promise<{ token: string; username: string }> {
+  async login(
+    username: string,
+    password: string
+  ): Promise<ServiceResponse<{ token: string; username: string }>> {
     const user = await this.userRepository.findByUsername(username);
 
     if (!user) {
-      throw new Error('Invalid credentials');
+      return {
+        success: false,
+        error: {
+          code: ErrorCode.INVALID_CREDENTIALS,
+          message: ErrorMessage.INVALID_CREDENTIALS,
+        },
+      };
     }
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
 
     if (!isMatch) {
-      throw new Error('Invalid credentials');
+      return {
+        success: false,
+        error: {
+          code: ErrorCode.INVALID_CREDENTIALS,
+          message: ErrorMessage.INVALID_CREDENTIALS,
+        },
+      };
     }
 
     const token = jwt.sign(
@@ -45,6 +73,9 @@ export class AuthService {
       { expiresIn: '1h' }
     );
 
-    return { token, username: user.username };
+    return {
+      success: true,
+      data: { token, username: user.username },
+    };
   }
 }

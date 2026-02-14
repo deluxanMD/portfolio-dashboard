@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { AuthService } from '@/service/auth.service';
 import { UserInput } from '@/types/user.types';
-import { Error } from 'mongoose';
+import logger from '@/utils/logger.util';
+import { ErrorCode, ErrorMessage } from '@/types/common.types';
 
 const authService = new AuthService();
 
@@ -18,20 +19,26 @@ export const register = async (
     }
 
     const result = await authService.register(username, password);
-    res.status(201).json(result);
-  } catch (error: unknown) {
-    let status = 500;
-    let message = 'Server Error';
 
-    if (error instanceof Error) {
-      message = error.message;
+    if (!result.success) {
+      const code = result.error?.code;
 
-      if (message === 'User already exists') {
-        status = 400;
+      switch (code) {
+        case ErrorCode.USER_EXIST:
+          res.status(400).json({ message: ErrorMessage.USER_EXIST });
+          break;
+        default:
+          res.status(500).json({ message: ErrorMessage.SERVER_ERROR });
+          break;
       }
+
+      return;
     }
 
-    res.status(status).json({ message });
+    res.status(201).json(result);
+  } catch (error: unknown) {
+    logger.error(error);
+    res.status(500).json({ message: ErrorMessage.SERVER_ERROR });
   }
 };
 
@@ -45,16 +52,25 @@ export const login = async (req: Request<void, void, UserInput>, res: Response):
     }
 
     const result = await authService.login(username, password);
-    res.status(200).json(result);
-  } catch (error: unknown) {
-    let status = 500;
-    let message = 'Server error';
 
-    if (error instanceof Error) {
-      message = error.message;
-      if (message === 'Invalid credentials') status = 401;
+    if (!result.success) {
+      const code = result.error?.code;
+
+      switch (code) {
+        case ErrorCode.INVALID_CREDENTIALS:
+          res.status(400).json({ message: ErrorMessage.INVALID_CREDENTIALS });
+          break;
+        default:
+          res.status(500).json({ message: ErrorMessage.SERVER_ERROR });
+          break;
+      }
+
+      return;
     }
 
-    res.status(status).json({ message });
+    res.status(200).json(result);
+  } catch (error: unknown) {
+    logger.error(error);
+    res.status(500).json({ message: ErrorMessage.SERVER_ERROR });
   }
 };
