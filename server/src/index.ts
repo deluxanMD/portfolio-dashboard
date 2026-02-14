@@ -7,10 +7,10 @@ import morgan from 'morgan';
 import { connectDB } from './config/database';
 
 // utils
-import logger from '@/utils/logger.util';
+import logger from './utils/logger.util';
 
 // Routes
-import authRoutes from '@/routes/auth.routes';
+import authRoutes from './routes/auth.routes';
 import { SystemError } from './types/error.types';
 
 // Load env files based on the current environment

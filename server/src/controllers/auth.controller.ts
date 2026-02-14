@@ -1,24 +1,27 @@
 import { Request, Response } from 'express';
-import { AuthService } from '@/service/auth.service';
-import { UserInput } from '@/types/user.types';
-import logger from '@/utils/logger.util';
-import { ErrorMessage } from '@/types/common.types';
+import { AuthService } from '../service/auth.service';
+import logger from '../utils/logger.util';
+import { ErrorCode, ErrorMessage } from '../types/common.types';
 
 const authService = new AuthService();
 
-export const register = async (
-  req: Request<void, void, UserInput>,
-  res: Response
-): Promise<void> => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      res.status(400).json({ message: 'Username and password are required' });
+      res.status(ErrorCode.BAD_REQUEST).json({
+        success: false,
+        error: {
+          code: ErrorCode.BAD_REQUEST,
+          message: 'Username and password are required',
+        },
+      });
       return;
     }
 
     const result = await authService.register(username, password);
+    console.log('controller result', result);
     const code = result.error?.code;
     res.status(Number(code)).json(result);
   } catch (error: unknown) {
@@ -27,12 +30,18 @@ export const register = async (
   }
 };
 
-export const login = async (req: Request<void, void, UserInput>, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      res.status(400).json({ message: 'Username and password are required' });
+      res.status(ErrorCode.BAD_REQUEST).json({
+        success: false,
+        error: {
+          code: ErrorCode.BAD_REQUEST,
+          message: 'Username and password are required',
+        },
+      });
       return;
     }
 

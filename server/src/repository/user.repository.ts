@@ -1,5 +1,5 @@
-import User from '@/models/User';
-import { IUser } from '@/types/user.types';
+import User from '../models/User';
+import { IUser } from '../types/user.types';
 
 export class UserRepository {
   async findByUsername(username: string): Promise<IUser | null> {

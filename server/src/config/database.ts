@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '@/utils/logger.util';
+import logger from '../utils/logger.util';
 
 // Database Connection
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/portfolio_db';
