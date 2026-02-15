@@ -62,3 +62,33 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: ErrorMessage.SERVER_ERROR });
   }
 };
+
+export const refreshToken = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      res.status(ErrorCode.BAD_REQUEST).json({
+        success: false,
+        error: { code: ErrorCode.BAD_REQUEST, message: ErrorMessage.REFRESH_TOKEN_REQUIRED },
+      });
+      return;
+    }
+
+    const result = await authService.refreshToken(refreshToken);
+    const errorCode = result.error?.code;
+
+    if (errorCode) {
+      res.status(ErrorCode.BAD_REQUEST).json({
+        success: false,
+        error: { code: ErrorCode.BAD_REQUEST, message: ErrorMessage.INVALID_REFRESH_TOKEN },
+      });
+      return;
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    logger.error('Refresh token error:', error);
+    res.status(500).json({ message: ErrorMessage.SERVER_ERROR });
+  }
+};

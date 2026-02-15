@@ -2,12 +2,28 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorCode, ErrorMessage, ServiceResponse } from '../types/common.types';
+import logger from '../utils/logger.util';
 
 export class AuthService {
   private userRepository: UserRepository;
 
   constructor() {
     this.userRepository = new UserRepository();
+  }
+
+  // Helper to generate tokens
+  private generateTokens(userId: string, username: string) {
+    const token = jwt.sign({ userId, username }, process.env.JWT_SECRET as string, {
+      expiresIn: '15m',
+    });
+
+    const refreshToken = jwt.sign(
+      { userId, username },
+      process.env.REFRESH_TOKEN_SECRET as string,
+      { expiresIn: '7d' }
+    );
+
+    return { token, refreshToken };
   }
 
   // Create new user
@@ -42,7 +58,7 @@ export class AuthService {
   async login(
     username: string,
     password: string
-  ): Promise<ServiceResponse<{ token: string; username: string }>> {
+  ): Promise<ServiceResponse<{ token: string; refreshToken: string; username: string }>> {
     const user = await this.userRepository.findByUsername(username);
 
     if (!user) {
@@ -67,15 +83,39 @@ export class AuthService {
       };
     }
 
-    const token = jwt.sign(
-      { userId: user._id, username: user.username },
-      process.env.JWT_SECRET as string,
-      { expiresIn: '1h' }
-    );
+    const { token, refreshToken } = this.generateTokens(user._id.toString(), user.username);
 
     return {
       success: true,
-      data: { token, username: user.username },
+      data: { token, refreshToken, username: user.username },
     };
+  }
+
+  // Token management
+  async refreshToken(refreshToken: string): Promise<ServiceResponse<{ token: string }>> {
+    try {
+      const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as {
+        userId: string;
+        username: string;
+      };
+
+      // Issue a new Access Token only
+      const newAccessToken = jwt.sign(
+        { userId: decoded.userId, username: decoded.username },
+        process.env.JWT_SECRET as string,
+        { expiresIn: '15m' }
+      );
+
+      return {
+        success: true,
+        data: { token: newAccessToken },
+      };
+    } catch (error) {
+      logger.error('Error refreshing token:', error);
+      return {
+        success: false,
+        error: { code: ErrorCode.UNAUTHORIZED, message: ErrorMessage.UNAUTHORIZED },
+      };
+    }
   }
 }
