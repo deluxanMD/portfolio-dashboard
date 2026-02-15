@@ -24,6 +24,7 @@ const LoginPage = () => {
       dispatch(
         setCredentials({
           token: result.data.token,
+          refreshToken: result.data.refreshToken,
         })
       )
       navigate('/')

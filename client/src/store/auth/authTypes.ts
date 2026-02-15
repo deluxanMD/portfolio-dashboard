@@ -5,12 +5,14 @@ export interface User {
 
 export interface AuthState {
   token: string | null
+  refreshToken: string | null
 }
 
 export type LoginResponse = {
   success: boolean
   data: {
     token: string
+    refreshToken: string
     username: string
   }
 }
