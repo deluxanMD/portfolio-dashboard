@@ -33,7 +33,7 @@ const TransactionDialog = ({
 
   const quantity = asset?.data?.quantity
   const price = asset?.data?.purchasePrice
-  const type = asset?.data?.type
+  const type = asset?.data?.type as 'BUY' | 'SELL'
   const totalValue = (quantity || 0) * (price || 0)
 
   const errorMessage = (error as any)?.data?.error?.message
