@@ -40,7 +40,7 @@ const PFAutocompleteField = ({
     fieldState: { error },
   } = useController({ name })
 
-  const onChange = useOnAutocompleteChange(field, multiple)
+  const onChange = useOnAutocompleteChange(field, multiple as boolean)
 
   const selectedValue = multiple
     ? options.filter((option) => (field.value || []).includes(option.id))
