@@ -15,6 +15,8 @@ export enum ErrorMessage {
   UNAUTHORIZED_ASSET = 'Not authorized for this asset',
   INSUFFICIENT_QTY = 'Insufficient quantity to sell',
   REQUIRED_FIELDS = 'Missing required fields',
+  REFRESH_TOKEN_REQUIRED = 'Refresh token is required',
+  INVALID_REFRESH_TOKEN = 'Invalid refresh token',
   SERVER_ERROR = 'Server error',
 }
 
