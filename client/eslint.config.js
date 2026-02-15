@@ -21,7 +21,7 @@ export default defineConfig([
     },
     rules: {
       'no-extra-boolean-cast': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ])

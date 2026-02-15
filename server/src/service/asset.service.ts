@@ -14,6 +14,20 @@ export class AssetService {
     return { success: true, data: assets };
   }
 
+  async getPortfolioById(assetId: string): Promise<ServiceResponse<IAsset>> {
+    const asset = await this.assetRepository.findAssetById(assetId);
+    if (!asset) {
+      return {
+        success: false,
+        error: {
+          code: ErrorCode.NOT_FOUND,
+          message: ErrorMessage.ASSET_NOT_FOUND,
+        },
+      };
+    }
+    return { success: true, data: asset };
+  }
+
   async addAsset(userId: string, asset: IAsset): Promise<ServiceResponse<IAsset>> {
     const newAsset = await this.assetRepository.createAsset({
       ...asset,
