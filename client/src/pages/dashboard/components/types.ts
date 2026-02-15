@@ -1,5 +1,5 @@
 import type { SxProps, Theme } from '@mui/material'
-import type { AssetsResponse } from '../../../store/asset/assetTypes'
+import type { Asset, AssetsResponse } from '../../../store/asset/assetTypes'
 
 export interface IDashboardHeader {
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,6 +16,7 @@ export interface IAssetTable {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
   setDeleteOpen: React.Dispatch<React.SetStateAction<boolean>>
+  handleTradeClick: (asset: Asset) => void
 }
 
 export interface ISummaryCardItem {
