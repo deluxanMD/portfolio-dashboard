@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import LoginPage from './pages/login/login.page'
 import RegisterPage from './pages/register/register.page'
 import ProtectedRoute from './components/protected-route'
+import DashboardPage from './pages/dashboard/dashboard.page'
 
 // Create a default theme
 const theme = createTheme({
@@ -17,8 +18,6 @@ const theme = createTheme({
   },
 })
 
-const DashboardPlaceholder = () => <h1>Dashboard (Protected)</h1>
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -29,8 +28,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<DashboardPlaceholder />} />
-            {/* Add Portfolio and Transaction routes here later */}
+            <Route path="/" element={<DashboardPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
