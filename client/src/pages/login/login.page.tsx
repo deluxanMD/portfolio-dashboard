@@ -23,9 +23,8 @@ const LoginPage = () => {
       console.log(result)
       dispatch(
         setCredentials({
-          user: { userId: 'temp-id', username: result.username },
-          token: result.token,
-          refreshToken: result.refreshToken,
+          token: result.data.token,
+          refreshToken: result.data.refreshToken,
         })
       )
       navigate('/')

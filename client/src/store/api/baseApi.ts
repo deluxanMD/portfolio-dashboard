@@ -40,7 +40,7 @@ const baseQueryWithReauth: BaseQueryFn<
       )
 
       if (refreshResult.data) {
-        const newToken = (refreshResult.data as any).token
+        const newToken = (refreshResult.data as any)?.data?.token
         api.dispatch(tokenUpdated({ token: newToken }))
 
         result = await baseQuery(args, api, extraOptions)

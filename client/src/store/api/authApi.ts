@@ -1,4 +1,5 @@
 import type { IAuthInput } from '../../components/forms/login-form/types'
+import type { LoginResponse } from '../auth/authTypes'
 import { api } from './baseApi'
 
 export interface User {
@@ -18,7 +19,7 @@ export interface RegisterResponse {
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<AuthResponse, IAuthInput>({
+    login: builder.mutation<LoginResponse, IAuthInput>({
       query: (credentials) => ({
         url: '/auth/login',
         method: 'POST',
