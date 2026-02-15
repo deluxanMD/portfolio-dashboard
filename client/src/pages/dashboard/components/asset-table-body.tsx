@@ -8,7 +8,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material'
+import {
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  SwapHoriz as SwapIcon,
+} from '@mui/icons-material'
 import type { IAssetTable } from './types'
 import AssetsEmpty from './assets-empty'
 
@@ -19,6 +23,7 @@ const AssetTableBody = ({
   setAssetId,
   setDeleteOpen,
   setDeleteId,
+  handleTradeClick,
 }: Partial<IAssetTable>) => {
   return (
     <TableBody>
@@ -104,6 +109,21 @@ const AssetTableBody = ({
               </Typography>
             </TableCell>
             <TableCell align="center">
+              <Tooltip title="Trade">
+                <IconButton
+                  size="small"
+                  color="primary"
+                  onClick={() => {
+                    if (handleTradeClick) {
+                      handleTradeClick(asset)
+                    }
+                  }}
+                  sx={{ mr: 1 }}
+                >
+                  <SwapIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+
               <Tooltip title="Edit">
                 <IconButton
                   size="small"
