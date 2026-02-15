@@ -7,6 +7,12 @@ export const assetsApi = api.injectEndpoints({
       query: () => '/assets',
       providesTags: ['Assets'],
     }),
+
+    getAsset: builder.query<AssetResponse, string>({
+      query: (id) => `/assets/${id}`,
+      providesTags: ['Assets'],
+    }),
+
     addAsset: builder.mutation<AssetResponse, Partial<Asset>>({
       query: (body) => ({
         url: '/assets',
@@ -15,6 +21,7 @@ export const assetsApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Assets'],
     }),
+
     updateAsset: builder.mutation<
       AssetResponse,
       { id: string; body: Partial<Asset> }
@@ -26,6 +33,7 @@ export const assetsApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Assets'],
     }),
+
     deleteAsset: builder.mutation<{ message: string }, string>({
       query: (id) => ({
         url: `/assets/${id}`,
@@ -38,6 +46,7 @@ export const assetsApi = api.injectEndpoints({
 
 export const {
   useGetAssetsQuery,
+  useGetAssetQuery,
   useAddAssetMutation,
   useUpdateAssetMutation,
   useDeleteAssetMutation,

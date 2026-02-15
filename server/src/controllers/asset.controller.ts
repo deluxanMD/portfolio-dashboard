@@ -21,6 +21,33 @@ export const getPortfolio = async (req: AuthRequest, res: Response): Promise<voi
     const result = await assetService.getPortfolio(userId);
     res.status(200).json(result);
   } catch (error) {
+    logger.error('Get portfolios error:', error);
+    res.status(500).json({
+      success: false,
+      error: {
+        code: ErrorCode.SERVER_ERROR,
+        message: ErrorMessage.SERVER_ERROR,
+      },
+    });
+  }
+};
+
+export const getPortfolioById = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    const assetId = req.params.id;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        error: { code: ErrorCode.UNAUTHORIZED, message: ErrorMessage.UNAUTHORIZED },
+      });
+      return;
+    }
+
+    const result = await assetService.getPortfolioById(assetId as string);
+    res.status(200).json(result);
+  } catch (error) {
     logger.error('Get portfolio error:', error);
     res.status(500).json({
       success: false,

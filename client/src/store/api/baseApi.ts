@@ -1,11 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type { RootState } from '../index'
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
-} from '@reduxjs/toolkit/query'
-import { logout, tokenUpdated } from '../auth/authSlice'
+} from '@reduxjs/toolkit/query/react'
+import { tokenUpdated, logout } from '../auth/authSlice'
+import { Mutex } from 'async-mutex'
+import type { RootState } from '..'
+
+const mutex = new Mutex()
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_URL,
@@ -23,35 +26,44 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+  await mutex.waitForUnlock()
   let result = await baseQuery(args, api, extraOptions)
 
   if (result.error && result.error.status === 401) {
-    try {
-      const refreshToken = (api.getState() as RootState).auth.refreshToken
-      if (!refreshToken) {
-        api.dispatch(logout())
-        return result
+    if (!mutex.isLocked()) {
+      const release = await mutex.acquire()
+      try {
+        const refreshToken = (api.getState() as RootState).auth.refreshToken
+
+        if (!refreshToken) {
+          api.dispatch(logout())
+          return result
+        }
+
+        const refreshResult = await baseQuery(
+          {
+            url: '/auth/refresh',
+            method: 'POST',
+            body: { refreshToken },
+          },
+          api,
+          extraOptions
+        )
+
+        if (refreshResult.data) {
+          const newToken = (refreshResult.data as any).token
+          api.dispatch(tokenUpdated({ token: newToken }))
+          result = await baseQuery(args, api, extraOptions)
+        } else {
+          api.dispatch(logout())
+        }
+      } finally {
+        release()
       }
-
-      const refreshResult = await baseQuery(
-        { url: '/auth/refresh', method: 'POST', body: { refreshToken } },
-        api,
-        extraOptions
-      )
-
-      if (refreshResult.data) {
-        const newToken = (refreshResult.data as any)?.data?.token
-        api.dispatch(tokenUpdated({ token: newToken }))
-
-        result = await baseQuery(args, api, extraOptions)
-      } else {
-        api.dispatch(logout())
-      }
-    } catch (error) {
-      console.log(error)
+    } else {
+      await mutex.waitForUnlock()
+      result = await baseQuery(args, api, extraOptions)
     }
-  } else {
-    result = await baseQuery(args, api, extraOptions)
   }
 
   return result
