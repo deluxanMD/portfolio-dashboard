@@ -61,6 +61,7 @@ const DashboardPage = () => {
             setDeleteOpen={setDeleteOpen}
             setDialogOpen={setDialogOpen}
             setIsEdit={setIsEdit}
+            setDeleteId={setDeleteId}
           />
         )}
       </Box>
