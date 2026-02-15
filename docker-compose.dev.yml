@@ -8,28 +8,29 @@ services:
       - mongo-data:/data/db
     restart: always
 
-  # server:
-  #   build: ./server
-  #   container_name: portfolio-server
-  #   ports:
-  #     - "5001:5001"
-  #   environment:
-  #     - NODE_ENV=production
-  #     - PORT=5001
-  #     - MONGO_URI=mongodb://mongodb:27017/portfolio_db
-  #     - JWT_SECRET=LJLJLJ89797GHFHF657786HGHFR
-  #   depends_on:
-  #     - mongodb
-  #   restart: always
+  server:
+    build: ./server
+    container_name: portfolio-server
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+      - MONGO_URI=mongodb://mongodb:27017/portfolio_db
+      - JWT_SECRET=LJLJLJ89797GHFHF657786HGHFR
+      - REFRESH_TOKEN_SECRET=LKJLKJJL0980808080
+    depends_on:
+      - mongodb
+    restart: always
 
-  # client:
-  #   build: ./client
-  #   container_name: portfolio-client
-  #   ports:
-  #     - "5173:80"
-  #   depends_on:
-  #     - server
-  #   restart: always
+  client:
+    build: ./client
+    container_name: portfolio-client
+    ports:
+      - "5173:80"
+    depends_on:
+      - server
+    restart: always
 
 volumes:
   mongo-data:
