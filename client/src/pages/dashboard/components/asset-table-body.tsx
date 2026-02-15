@@ -104,42 +104,43 @@ const AssetTableBody = ({
               </Typography>
             </TableCell>
             <TableCell align="center">
-              {setAssetId && setIsEdit && setDialogOpen && (
-                <Tooltip title="Edit">
-                  <IconButton
-                    size="small"
-                    sx={{
-                      mr: 1,
-                      color: '#64748b',
-                      '&:hover': { color: '#1976d2' },
-                    }}
-                    onClick={() => {
+              <Tooltip title="Edit">
+                <IconButton
+                  size="small"
+                  sx={{
+                    mr: 1,
+                    color: '#64748b',
+                    '&:hover': { color: '#1976d2' },
+                  }}
+                  onClick={() => {
+                    if (setAssetId && setDialogOpen && setIsEdit) {
                       setAssetId(asset._id)
                       setIsEdit(true)
                       setDialogOpen(true)
-                    }}
-                  >
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              )}
-              {setDeleteOpen && setDeleteId && (
-                <Tooltip title="Delete">
-                  <IconButton
-                    size="small"
-                    onClick={() => {
+                    }
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Delete">
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    if (setDeleteId && setDeleteOpen) {
                       setDeleteId(asset._id)
                       setDeleteOpen(true)
-                    }}
-                    sx={{
-                      color: '#64748b',
-                      '&:hover': { color: '#ef4444' },
-                    }}
-                  >
-                    <DeleteIcon fontSize="small" color="error" />
-                  </IconButton>
-                </Tooltip>
-              )}
+                    }
+                  }}
+                  sx={{
+                    color: '#64748b',
+                    '&:hover': { color: '#ef4444' },
+                  }}
+                >
+                  <DeleteIcon fontSize="small" color="error" />
+                </IconButton>
+              </Tooltip>
             </TableCell>
           </TableRow>
         )
