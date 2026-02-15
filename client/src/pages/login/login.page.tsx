@@ -25,6 +25,7 @@ const LoginPage = () => {
         setCredentials({
           user: { userId: 'temp-id', username: result.username },
           token: result.token,
+          refreshToken: result.refreshToken,
         })
       )
       navigate('/')
