@@ -9,6 +9,8 @@ import AssetDeleteDialog from '../../components/dialogs/asset-delete-dialog'
 import Header from './components/haeder'
 import SummaryCard from './components/summary-card'
 import AssetTable from './components/asset-table'
+import TransactionDialog from '../../components/dialogs/transaction-dialog'
+import type { Asset } from '../../store/asset/assetTypes'
 
 const DashboardPage = () => {
   const { data: assets, isLoading, error } = useGetAssetsQuery()
@@ -18,6 +20,15 @@ const DashboardPage = () => {
   const [assetId, setAssetId] = useState('')
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
   const [deleteId, setDeleteId] = useState<string>('')
+
+  // Transaction Dialog State
+  const [isTradeDialogOpen, setIsTradeDialogOpen] = useState(false)
+  const [assetToTrade, setAssetToTrade] = useState<Asset | null>(null)
+
+  const handleTradeClick = (asset: Asset) => {
+    setAssetToTrade(asset)
+    setIsTradeDialogOpen(true)
+  }
 
   const handleDelete = async (id: string) => {
     try {
@@ -62,6 +73,7 @@ const DashboardPage = () => {
             setDialogOpen={setDialogOpen}
             setIsEdit={setIsEdit}
             setDeleteId={setDeleteId}
+            handleTradeClick={handleTradeClick}
           />
         )}
       </Box>
@@ -84,6 +96,22 @@ const DashboardPage = () => {
           handleDelete={handleDelete}
           handleClose={() => {
             setDeleteOpen(false)
+          }}
+        />
+      )}
+
+      {assetToTrade && (
+        <TransactionDialog
+          open={isTradeDialogOpen}
+          onClose={() => {
+            setIsTradeDialogOpen(false)
+            setAssetToTrade(null)
+          }}
+          asset={assetToTrade}
+          assetId={assetToTrade._id}
+          handleClose={() => {
+            setIsTradeDialogOpen(false)
+            setAssetToTrade(null)
           }}
         />
       )}

@@ -4,6 +4,7 @@ import LoginPage from './pages/login/login.page'
 import RegisterPage from './pages/register/register.page'
 import ProtectedRoute from './components/protected-route'
 import DashboardPage from './pages/dashboard/dashboard.page'
+import TransactionPage from './pages/transaction/transaction.page'
 
 // Create a default theme
 const theme = createTheme({
@@ -29,6 +30,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<DashboardPage />} />
+            <Route path="/transactions" element={<TransactionPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

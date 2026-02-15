@@ -42,18 +42,21 @@ export const addTransaction = async (req: AuthRequest, res: Response): Promise<v
       return;
     }
 
-    const { asset, type, quantity, pricePerUnit } = req.body || {};
+    const { assetId, type, quantity, pricePerUnit } = req.body || {};
 
-    if (!asset || !type || !quantity || !pricePerUnit) {
+    console.log({ assetId, type, quantity, pricePerUnit });
+
+    if (!assetId || !type || !quantity || !pricePerUnit) {
       res.status(400).json({
         success: false,
         error: { code: ErrorCode.BAD_REQUEST, message: ErrorMessage.REQUIRED_FIELDS },
       });
+      return;
     }
 
     const result = await transactionService.addTransaction(
       userId,
-      asset,
+      assetId,
       type,
       Number(quantity),
       Number(pricePerUnit)
