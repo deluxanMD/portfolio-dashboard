@@ -7,7 +7,7 @@ import type { IAssetTable } from './types'
 const AssetTable = ({ ...rest }: Partial<IAssetTable>) => {
   return (
     <>
-      <AssetTableTitle assets={rest.assets} />
+      <AssetTableTitle assets={rest.assets} data-testid="AssetTable.Title" />
       <TableContainer
         component={Paper}
         elevation={0}

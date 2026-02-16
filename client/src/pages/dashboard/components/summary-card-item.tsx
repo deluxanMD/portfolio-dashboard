@@ -41,16 +41,22 @@ const SummaryCardItem = ({
             variant="subtitle1"
             fontWeight="500"
             sx={{ opacity: 0.9 }}
+            data-testid="SummaryCardItem.Title"
           >
             {title}
           </Typography>
         </Box>
-        <Typography variant="h3" fontWeight="bold">
+        <Typography
+          variant="h3"
+          fontWeight="bold"
+          data-testid="SummaryCardItem.Value"
+        >
           {value}
         </Typography>
         <Typography
           variant="caption"
           sx={{ opacity: 0.8, mt: 1, display: 'block' }}
+          data-testid="SummaryCardItem.Tagline"
         >
           {tagline}
         </Typography>

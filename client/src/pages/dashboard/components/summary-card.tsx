@@ -18,7 +18,7 @@ const SummaryCard = ({ assets }: ISummaryCard) => {
   const topAsset = getTopAssetType(assets)
 
   return (
-    <Grid container spacing={3} mb={5}>
+    <Grid container spacing={3} mb={5} data-testid="SummaryCard">
       <SummaryCardItem
         Icon={AttachMoneyIcon}
         title="Total Balance"
