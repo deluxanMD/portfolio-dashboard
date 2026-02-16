@@ -52,7 +52,7 @@ jobs:
         run: npm run format:check
 
       - name: Run Cypress
-        run: npm run cypress:run
+        run: npm run cypress:run:ci
 
       - name: Build Project
         run: npm run build
