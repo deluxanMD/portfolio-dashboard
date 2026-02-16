@@ -58,8 +58,8 @@ const AssetDialog = ({
   }
 
   return (
-    <Dialog {...rest} maxWidth="sm" open fullWidth>
-      <DialogTitle sx={{ m: 0, p: 2 }}>
+    <Dialog {...rest} maxWidth="sm" open fullWidth data-testid="AssetDialog">
+      <DialogTitle sx={{ m: 0, p: 2 }} data-testid="AssetDialog.Title">
         <Box
           sx={{
             display: 'flex',
@@ -88,7 +88,12 @@ const AssetDialog = ({
           >
             Cancel
           </Button>
-          <Button type="submit" variant="contained" disabled={isLoading}>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isLoading}
+            data-testid="AssetDialog.SubmitButton"
+          >
             {isLoading ? (
               <CircularProgress size={24} />
             ) : isEdit ? (

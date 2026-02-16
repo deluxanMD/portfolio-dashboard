@@ -14,6 +14,7 @@ import type { Asset } from '../../store/asset/assetTypes'
 
 const DashboardPage = () => {
   const { data: assets, isLoading, error } = useGetAssetsQuery()
+  console.log('assets', assets)
   const [deleteAsset, { isLoading: isDeleteLoading }] = useDeleteAssetMutation()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)

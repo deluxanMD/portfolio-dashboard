@@ -35,12 +35,11 @@ const Header = ({ setDialogOpen }: IDashboardHeader) => {
           startIcon={<AddIcon />}
           onClick={() => setDialogOpen(true)}
           sx={{
-            borderRadius: 2,
-            textTransform: 'none',
             px: 3,
             py: 1,
             boxShadow: '0 4px 12px rgba(25, 118, 210, 0.2)',
           }}
+          data-testid="AddInvestment.Button"
         >
           Add Investment
         </Button>

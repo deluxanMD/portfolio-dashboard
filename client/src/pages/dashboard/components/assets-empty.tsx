@@ -10,10 +10,19 @@ const AssetsEmpty = ({ setDialogOpen }: Partial<IAssetTable>) => {
     <TableRow>
       <TableCell colSpan={7} align="center" sx={{ py: 8 }}>
         <TrendingUpIcon sx={{ fontSize: 48, color: '#e2e8f0', mb: 2 }} />
-        <Typography variant="h6" color="text.secondary">
+        <Typography
+          variant="h6"
+          color="text.secondary"
+          data-testid="AssetsEmpty.Title"
+        >
           No assets found
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mb: 3 }}
+          data-testid="AssetsEmpty.Description"
+        >
           Start building your portfolio by adding an investment.
         </Typography>
         <Button
